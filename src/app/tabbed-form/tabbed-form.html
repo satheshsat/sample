@@ -1,0 +1,44 @@
+<div class="tabbed-form-container" id="main-content">
+  <div class="tabs" role="tablist">
+    <button 
+      (click)="setActiveTab(0)" 
+      [class.active]="activeTab === 0"
+      role="tab"
+      [attr.aria-selected]="activeTab === 0"
+      [attr.aria-controls]="'panel-0'"
+      id="tab-0"
+    >
+      Tab A
+    </button>
+    <button 
+      (click)="setActiveTab(1)" 
+      [class.active]="activeTab === 1"
+      role="tab"
+      [attr.aria-selected]="activeTab === 1"
+      [attr.aria-controls]="'panel-1'"
+      id="tab-1"
+    >
+      Tab B
+    </button>
+  </div>
+
+  <div 
+    *ngIf="activeTab === 0" 
+    id="panel-0"
+    role="tabpanel"
+    [attr.aria-labelledby]="'tab-0'"
+    class="tab-content"
+  >
+    <app-dynamic-form [schema]="schemaA" [formType]="'A'"></app-dynamic-form>
+  </div>
+
+  <div 
+    *ngIf="activeTab === 1" 
+    id="panel-1"
+    role="tabpanel"
+    [attr.aria-labelledby]="'tab-1'"
+    class="tab-content"
+  >
+    <app-dynamic-form [schema]="schemaB" [formType]="'B'"></app-dynamic-form>
+  </div>
+</div>

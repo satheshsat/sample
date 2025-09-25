@@ -1,0 +1,91 @@
+<div class="form-container">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+    <div class="form-header">
+      <h3>Form {{ formType }}</h3>
+    </div>
+
+    <!-- Success Message -->
+    <div *ngIf="successMessage()" class="alert alert-success" role="alert">
+      {{ successMessage() }}
+    </div>
+
+    <!-- Error Message -->
+    <div *ngIf="errorMessage()" class="alert alert-error" role="alert">
+      {{ errorMessage() }}
+    </div>
+
+    <div class="form-fields">
+      <div *ngFor="let field of schema" class="form-group">
+        <label [for]="field.name" class="form-label">
+          {{ field.label }}
+          <span *ngIf="field.required" class="required-asterisk">*</span>
+        </label>
+
+        <ng-container [ngSwitch]="field.type">
+          <input 
+            *ngSwitchCase="'text'" 
+            [formControlName]="field.name" 
+            id="{{ field.name }}" 
+            type="text" 
+            class="form-control"
+            [class.error]="form.get(field.name)?.invalid && form.get(field.name)?.touched"
+            placeholder="Enter {{ field.label.toLowerCase() }}"
+          />
+          <input 
+            *ngSwitchCase="'email'" 
+            [formControlName]="field.name" 
+            id="{{ field.name }}" 
+            type="email" 
+            class="form-control"
+            [class.error]="form.get(field.name)?.invalid && form.get(field.name)?.touched"
+            placeholder="Enter your email address"
+          />
+          <input 
+            *ngSwitchCase="'password'" 
+            [formControlName]="field.name" 
+            id="{{ field.name }}" 
+            type="password" 
+            class="form-control"
+            [class.error]="form.get(field.name)?.invalid && form.get(field.name)?.touched"
+            placeholder="Enter your password"
+          />
+          <div *ngSwitchCase="'checkbox'" class="checkbox-container">
+            <input 
+              type="checkbox" 
+              [formControlName]="field.name" 
+              id="{{ field.name }}" 
+              class="form-check-input"
+            />
+            <label [for]="field.name" class="checkbox-label">{{ field.label }}</label>
+          </div>
+        </ng-container>
+
+        <div *ngIf="form.get(field.name)?.invalid && form.get(field.name)?.touched" class="field-error">
+          <div *ngIf="form.get(field.name)?.hasError('required')">This field is required</div>
+          <div *ngIf="form.get(field.name)?.hasError('email')">Please enter a valid email address</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button 
+        type="submit" 
+        [disabled]="form.invalid || isLoading()" 
+        class="btn btn-primary"
+        [class.loading]="isLoading()"
+      >
+        <span *ngIf="isLoading()" class="spinner"></span>
+        {{ isLoading() ? 'Submitting...' : 'Submit' }}
+      </button>
+      
+      <button 
+        type="button" 
+        (click)="onReset()" 
+        class="btn btn-secondary"
+        [disabled]="isLoading()"
+      >
+        Reset
+      </button>
+    </div>
+  </form>
+</div>
