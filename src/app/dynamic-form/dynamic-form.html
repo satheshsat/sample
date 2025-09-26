@@ -40,15 +40,27 @@
             [class.error]="form.get(field.name)?.invalid && form.get(field.name)?.touched"
             placeholder="Enter your email address"
           />
-          <input 
-            *ngSwitchCase="'password'" 
-            [formControlName]="field.name" 
-            id="{{ field.name }}" 
-            type="password" 
-            class="form-control"
-            [class.error]="form.get(field.name)?.invalid && form.get(field.name)?.touched"
-            placeholder="Enter your password"
-          />
+          <div *ngSwitchCase="'password'" class="password-input-container">
+            <input 
+              [formControlName]="field.name" 
+              id="{{ field.name }}" 
+              [type]="isPasswordVisible(field.name) ? 'text' : 'password'"
+              class="form-control password-input"
+              [class.error]="form.get(field.name)?.invalid && form.get(field.name)?.touched"
+              placeholder="Enter your password"
+            />
+            <button 
+              type="button" 
+              class="password-toggle-btn"
+              (click)="togglePasswordVisibility(field.name)"
+              [attr.aria-label]="isPasswordVisible(field.name) ? 'Hide password' : 'Show password'"
+              tabindex="0"
+            >
+              <span class="password-icon" [class.visible]="isPasswordVisible(field.name)">
+                {{ isPasswordVisible(field.name) ? '👁️' : '👁️‍🗨️' }}
+              </span>
+            </button>
+          </div>
           <div *ngSwitchCase="'checkbox'" class="checkbox-container">
             <input 
               type="checkbox" 

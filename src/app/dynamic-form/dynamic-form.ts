@@ -17,6 +17,7 @@ export class DynamicForm implements OnInit {
   isLoading = signal(false);
   errorMessage = signal('');
   successMessage = signal('');
+  passwordVisibility = signal<{[key: string]: boolean}>({});
 
   constructor(private fb: FormBuilder, private formDataService: FormData) {}
 
@@ -96,5 +97,17 @@ export class DynamicForm implements OnInit {
     this.form.reset();
     this.errorMessage.set('');
     this.successMessage.set('');
+  }
+
+  togglePasswordVisibility(fieldName: string): void {
+    const currentVisibility = this.passwordVisibility();
+    this.passwordVisibility.set({
+      ...currentVisibility,
+      [fieldName]: !currentVisibility[fieldName]
+    });
+  }
+
+  isPasswordVisible(fieldName: string): boolean {
+    return this.passwordVisibility()[fieldName] || false;
   }
 }
